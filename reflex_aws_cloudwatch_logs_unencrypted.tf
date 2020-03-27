@@ -16,8 +16,8 @@ module "reflex_aws_cloudwatch_logs_unencrypted" {
       "logs.amazonaws.com"
     ],
     "eventName": [
-      "logs:CreateLogGroup",
-      "logs:DisassociateKmsKey"
+      "CreateLogGroup",
+      "DisassociateKmsKey"
     ]
   }
 }
