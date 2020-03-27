@@ -1,10 +1,26 @@
 module "reflex_aws_cloudwatch_logs_unencrypted" {
   source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.5.4"
   rule_name        = "CloudWatchLogsUnencrypted"
-  rule_description = "TODO: Provide rule description"
+  rule_description = "A Reflex Rule for detecting CloudWatch Logs that are unencrypted"
 
   event_pattern = <<PATTERN
-# TODO: Provide event pattern
+{
+  "source": [
+    "aws.logs"
+  ],
+  "detail-type": [
+    "AWS API Call via CloudTrail"
+  ],
+  "detail": {
+    "eventSource": [
+      "logs.amazonaws.com"
+    ],
+    "eventName": [
+      "logs:CreateLogGroup",
+      "logs:DisassociateKmsKey"
+    ]
+  }
+}
 PATTERN
 
   function_name   = "CloudWatchLogsUnencrypted"
@@ -12,14 +28,22 @@ PATTERN
   handler         = "reflex_aws_cloudwatch_logs_unencrypted.lambda_handler"
   lambda_runtime  = "python3.7"
   environment_variable_map = {
-    SNS_TOPIC = var.sns_topic_arn,
-    MODE      = var.mode
+    SNS_TOPIC = var.sns_topic_arn
   }
   custom_lambda_policy = <<EOF
-# TODO: Provide required lambda permissions policy
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:DescribeLogGroups"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
 EOF
-
-
 
   queue_name    = "CloudWatchLogsUnencrypted"
   delay_seconds = 0

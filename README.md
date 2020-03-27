@@ -1,5 +1,5 @@
 # reflex-aws-cloudwatch-logs-unencrypted
-TODO: Write a brief description of your rule and what it does.
+A Reflex Rule for detecting CloudWatch Logs that are unencrypted.
 
 ## Usage
 To use this rule either add it to your `reflex.yaml` configuration file:  
