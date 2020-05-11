@@ -1,5 +1,5 @@
 module "reflex_aws_cloudwatch_logs_unencrypted" {
-  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.5.7"
+  source           = "git::https://github.com/cloudmitigator/reflex-engine.git//modules/cwe_lambda?ref=v0.6.0"
   rule_name        = "CloudWatchLogsUnencrypted"
   rule_description = "A Reflex Rule for detecting CloudWatch Logs that are unencrypted"
 
