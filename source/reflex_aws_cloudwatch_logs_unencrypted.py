@@ -25,7 +25,9 @@ class CloudWatchLogsUnencrypted(AWSRule):
 
         Return True if it is compliant, and False if it is not.
         """
-        response = self.client.describe_log_groups(logGroupNamePrefix=self.log_group_name)
+        response = self.client.describe_log_groups(
+            logGroupNamePrefix=self.log_group_name
+        )
 
         for log_group in response["logGroups"]:
             if log_group["logGroupName"] != self.log_group_name:
@@ -45,8 +47,9 @@ class CloudWatchLogsUnencrypted(AWSRule):
 def lambda_handler(event, _):
     """ Handles the incoming event """
     print(event)
-    if subscription_confirmation.is_subscription_confirmation(event):
-        subscription_confirmation.confirm_subscription(event)
+    event_payload = json.loads(event["Records"][0]["body"])
+    if subscription_confirmation.is_subscription_confirmation(event_payload):
+        subscription_confirmation.confirm_subscription(event_payload)
         return
-    rule = CloudWatchLogsUnencrypted(json.loads(event["Records"][0]["body"]))
+    rule = CloudWatchLogsUnencrypted(event_payload)
     rule.run_compliance_rule()
